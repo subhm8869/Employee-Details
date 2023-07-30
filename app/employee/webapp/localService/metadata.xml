@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="EmployeeService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Employee" EntityType="EmployeeService.Employee">
+                    <NavigationPropertyBinding Path="Address" Target="Address"/>
+                    <NavigationPropertyBinding Path="Department" Target="Department"/>
+                </EntitySet>
+                <EntitySet Name="Address" EntityType="EmployeeService.Address">
+                    <NavigationPropertyBinding Path="Employee" Target="Employee"/>
+                </EntitySet>
+                <EntitySet Name="Department" EntityType="EmployeeService.Department">
+                    <NavigationPropertyBinding Path="Employee" Target="Employee"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="Employee">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="Name" Type="Edm.String" MaxLength="15"/>
+                <Property Name="Age" Type="Edm.Int16"/>
+                <Property Name="Gender" Type="Edm.String" MaxLength="1"/>
+                <Property Name="Phone" Type="Edm.Int64"/>
+                <NavigationProperty Name="Address" Type="Collection(EmployeeService.Address)" Partner="Employee">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="Department" Type="EmployeeService.Department" Partner="Employee">
+                    <ReferentialConstraint Property="Department_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="Department_ID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="Address">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="AddressLine" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Pincode" Type="Edm.Int32"/>
+                <NavigationProperty Name="Employee" Type="EmployeeService.Employee" Partner="Address">
+                    <ReferentialConstraint Property="Employee_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="Employee_ID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="Department">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="Name" Type="Edm.String" MaxLength="15"/>
+                <Property Name="HeadCount" Type="Edm.Int16"/>
+                <NavigationProperty Name="Employee" Type="Collection(EmployeeService.Employee)" Partner="Department"/>
+            </EntityType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

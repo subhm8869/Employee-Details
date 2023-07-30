@@ -1,0 +1,3 @@
+const createEmployee = async (req) => {
+    
+};
