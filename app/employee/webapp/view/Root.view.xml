@@ -55,7 +55,7 @@
                                             sorter: {
                                                 path: 'Name'
                                             },
-                                            parameters : {expand:'Department'}
+                                            parameters : {expand:'Department,Address'}
                                         }"
                                 autoPopinMode="true"
                                 selectionChange="onSelectEmployee"
@@ -260,6 +260,26 @@
                                     <Input
                                         id="idEmployeeAgeInput"
                                         value="{Age}"
+                                    />
+
+                                    <!-- Address Line  -->
+                                    <Label
+                                        id="idEmployeeAddressLineLabel"
+                                        text="{i18n>AddressLine}"
+                                    />
+                                    <Input
+                                        id="idEmployeeAddressLineInput"
+                                        value="{/Address/AddressLine}"
+                                    />
+                                    
+                                    <!-- Pincode  -->
+                                    <Label
+                                        id="idEmployeePincodeLabel"
+                                        text="{i18n>Pincode}"
+                                    />
+                                    <Input
+                                        id="idEmployeePincodeInput"
+                                        value="{/Address/Pincode}"
                                     />
 
                                     <Label id="idBlankLabelForEmployee" />

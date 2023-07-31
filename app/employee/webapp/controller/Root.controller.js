@@ -29,6 +29,7 @@ sap.ui.define(
         });
 
         // var sEmployeeID = oEvent.getSource().getSelectedItem().mAggregations.cells[0].mProperties.text;
+        this.getView().byId("idEmployeeAddBtn").setEnabled(false);
         this.getView().byId("idEmployeeDeleteBtn").setEnabled(true);
         //  this.onDeleteEmployeeApplication(oPath);
       },
@@ -42,6 +43,8 @@ sap.ui.define(
           .getValue();
         let sGender = this.getView().byId("idEmployeeGenderInput").getValue();
         let sAge = this.getView().byId("idEmployeeAgeInput").getValue();
+        let sAddressLine = this.getView().byId("idEmployeeAddressLineInput").getValue();
+        let sPincode = this.getView().byId("idEmployeePincodeInput").getValue();
         let sDepartment = this.getView()
           .byId("idEmployeeDepartmentInput")
           .getSelectedItem()
@@ -57,8 +60,28 @@ sap.ui.define(
           Phone: parseInt(sPhone),
           Department_ID: sDepartment,
         };
+        const oAddressPayload = {
+          ID: crypto.randomUUID(),
+          AddressLine: sAddressLine,
+          Pincode: parseInt(sPincode),
+          Employee_ID: oPayload.ID
+        };
 
+        /**
+         * oModel to create a new employee
+         */
         oModel.create("/Employee", oPayload, {
+          success: () => {
+            // MessageToast.show(` Employee Sucessfully Added`);
+          },
+          error: (oErrorData) => {
+            MessageToast.show(` Error Occured : ${oErrorData}`);
+          },
+        });
+        /**
+         * oModel to add address to new employee Added
+         */
+        oModel.create("/Address", oAddressPayload, {
           success: () => {
             MessageToast.show(` Employee Sucessfully Added`);
           },
