@@ -78,16 +78,6 @@
                                 </headerToolbar>
                                 <columns>
                                     <Column
-                                        id="idEmployeeIDColumn"
-                                        demandPopin="true"
-                                        hAlign="Center"
-                                    >
-                                        <Text
-                                            id="idEmployeeIDColumnText"
-                                            text="ID"
-                                        />
-                                    </Column>
-                                    <Column
                                         id="idEmployeeNameColumn"
                                         demandPopin="true"
                                         hAlign="Center"
@@ -137,6 +127,26 @@
                                             text="Department"
                                         />
                                     </Column>
+                                    <Column
+                                        id="idEmployeeAddressLineColumn"
+                                        hAlign="Center"
+                                        demandPopin="true"
+                                    >
+                                        <Text
+                                            id="idEmployeeAddressLineColumnText"
+                                            text="Address Line"
+                                        />
+                                    </Column>
+                                    <Column
+                                        id="idEmployeePincodeColumn"
+                                        hAlign="Center"
+                                        demandPopin="true"
+                                    >
+                                        <Text
+                                            id="idEmployeePincodeColumnText"
+                                            text="Pincode"
+                                        />
+                                    </Column>
                                 </columns>
                                 <items>
                                     <ColumnListItem
@@ -144,10 +154,6 @@
                                         vAlign="Middle"
                                     >
                                         <cells>
-                                            <Text
-                                                id="idEmployeeID"
-                                                text="{ID}"
-                                            />
                                             <Text
                                                 id="idEmployeeName"
                                                 text="{Name}"
@@ -167,6 +173,14 @@
                                             <Text
                                                 id="idEmployeeDepartmentName"
                                                 text="{Department/Name}"
+                                            />
+                                            <Text
+                                                id="idEmployeeAddressLine"
+                                                text="{Address/0/AddressLine}"
+                                            />
+                                            <Text
+                                                id="idEmployeePincode"
+                                                text="{Address/0/Pincode}"
                                             />
                                         </cells>
                                     </ColumnListItem>
@@ -269,9 +283,9 @@
                                     />
                                     <Input
                                         id="idEmployeeAddressLineInput"
-                                        value="{/Address/AddressLine}"
+                                        value="{Address/0/AddressLine}"
                                     />
-                                    
+
                                     <!-- Pincode  -->
                                     <Label
                                         id="idEmployeePincodeLabel"
@@ -295,11 +309,19 @@
                                             class="sapUiSmallMarginEnd"
                                         />
                                         <Button
+                                            id="idEmployeeUpdateBtn"
+                                            text="{i18n>Update}"
+                                            press="onUpdateEmployeeApplication"
+                                            type="Emphasized"
+                                            visible="false"
+                                            class="sapUiSmallMarginEnd"
+                                        />
+                                        <Button
                                             id="idEmployeeDeleteBtn"
                                             text="{i18n>Delete}"
                                             press="onDeleteEmployeeApplication"
                                             type="Reject"
-                                            enabled="false"
+                                            visible="false"
                                             class="sapUiSmallMarginEnd"
                                         />
                                     </FlexBox>

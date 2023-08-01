@@ -29,8 +29,9 @@ sap.ui.define(
         });
 
         // var sEmployeeID = oEvent.getSource().getSelectedItem().mAggregations.cells[0].mProperties.text;
-        this.getView().byId("idEmployeeAddBtn").setEnabled(false);
-        this.getView().byId("idEmployeeDeleteBtn").setEnabled(true);
+        this.getView().byId("idEmployeeAddBtn").setVisible(false);
+        this.getView().byId("idEmployeeDeleteBtn").setVisible(true);
+        this.getView().byId("idEmployeeUpdateBtn").setVisible(true);
         //  this.onDeleteEmployeeApplication(oPath);
       },
 
@@ -43,7 +44,9 @@ sap.ui.define(
           .getValue();
         let sGender = this.getView().byId("idEmployeeGenderInput").getValue();
         let sAge = this.getView().byId("idEmployeeAgeInput").getValue();
-        let sAddressLine = this.getView().byId("idEmployeeAddressLineInput").getValue();
+        let sAddressLine = this.getView()
+          .byId("idEmployeeAddressLineInput")
+          .getValue();
         let sPincode = this.getView().byId("idEmployeePincodeInput").getValue();
         let sDepartment = this.getView()
           .byId("idEmployeeDepartmentInput")
@@ -64,7 +67,7 @@ sap.ui.define(
           ID: crypto.randomUUID(),
           AddressLine: sAddressLine,
           Pincode: parseInt(sPincode),
-          Employee_ID: oPayload.ID
+          Employee_ID: oPayload.ID,
         };
 
         /**
@@ -120,7 +123,7 @@ sap.ui.define(
 
         let oModel = this.getView().getModel();
 
-        oModel.remove(sEmployeePath,{
+        oModel.remove(sEmployeePath, {
           success: () => {
             MessageToast.show(`Employee Sucessfully Removed`);
           },
@@ -139,6 +142,67 @@ sap.ui.define(
         //     MessageToast.show(err.responseText);
         //   },
         // });
+      },
+
+      onUpdateEmployeeApplication: function () {
+        let oView = this.getView(),
+          oForm = oView.byId("idEmployeeForm");
+        let sName = this.getView()
+          .byId("idEmployeeStaffUserNameInput")
+          .getValue();
+        let sPhone = this.getView()
+          .byId("idEmployeePhoneNumberInput")
+          .getValue();
+        let sGender = this.getView().byId("idEmployeeGenderInput").getValue();
+        let sAge = this.getView().byId("idEmployeeAgeInput").getValue();
+        let sAddressLine = this.getView()
+          .byId("idEmployeeAddressLineInput")
+          .getValue();
+        let sPincode = this.getView().byId("idEmployeePincodeInput").getValue();
+        let sDepartment = this.getView()
+          .byId("idEmployeeDepartmentInput")
+          .getSelectedItem()
+          .getKey();
+
+        let oModel = this.getView().getModel();
+
+        const sEmployeePath = oForm.mObjectBindingInfos.undefined.path,
+        sEmployeeID = sEmployeePath.split(')')[0].split('\'')[1]
+
+        const oEmployeePayload = {
+          Age: parseInt(sAge),
+          Phone: parseInt(sPhone),
+          Department_ID: sDepartment,
+        };
+        const oAddressPayload = {
+          ID: crypto.randomUUID(),
+          AddressLine: sAddressLine,
+          Pincode: parseInt(sPincode),
+          Employee_ID: sEmployeeID,
+        };
+
+        /**
+         * oModel to update a employee
+         */
+        oModel.update(sEmployeePath, oEmployeePayload, {
+          success: () => {
+            MessageToast.show(` Employee Sucessfully Updated`);
+          },
+          error: (oErrorData) => {
+            MessageToast.show(` Error Occured : ${oErrorData}`);
+          },
+        });
+        /**
+         * oModel to add address to new employee Added
+         */
+        oModel.create("/Address", oAddressPayload, {
+          success: () => {
+            // MessageToast.show(` Address Sucessfully Added`);
+          },
+          error: (oErrorData) => {
+            MessageToast.show(` Error Occured : ${oErrorData}`);
+          },
+        });
       },
     });
   }
